@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+		<!-- script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script -->
+		<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+
+		<title>Multiplayer RPS</title>
+	</head>
+	<body>
+		<h1>Rock, Paper, Scissors -- Online</h1>
+		
+		<script> // Initialize Firebase
+			var config = {
+				apiKey: "AIzaSyDaPEPOAtaQmZCa3uTg_IyDceAVAIlPRgM",
+				authDomain: "rps-multiplayer-42479.firebaseapp.com",
+				databaseURL: "https://rps-multiplayer-42479.firebaseio.com",
+				projectId: "rps-multiplayer-42479",
+				storageBucket: "",
+				messagingSenderId: "315730385280"
+			};
+			
+			firebase.initializeApp(config);
+		</script>
+	</body>
+</html>
