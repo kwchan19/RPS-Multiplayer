@@ -2,7 +2,7 @@
 
 function showHistory(commentObj) {
 	if (typeof commentObj["commentator"] !== "undefined") return `<div class="row"><div class="col-auto mr-auto" style="text-align:left;"><strong>${commentObj["commentator"]}</strong></div><div class="col">${commentObj["comment"]}</div></div>`;
-	else return `<div class="row"><p></p></div>`;
+	else return `<div class="row"><div class="col" style="min-height:1.5em"></div></div>`;
 }
 
 /* global moment firebase */
