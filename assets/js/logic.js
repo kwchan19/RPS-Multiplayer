@@ -1,7 +1,8 @@
 // I want to add functionality to suspend the "RPS" listener when the chat input fields are in focus
 
 function showHistory(commentObj) {
-	return `<div class="row"><div class="col-auto mr-auto" style="text-align:left;"><strong>${commentObj["commentator"]}</strong></div><div class="col">${commentObj["comment"]}</div></div>`;
+	if (typeof commentObj["commentator"] !== "undefined") return `<div class="row"><div class="col-auto mr-auto" style="text-align:left;"><strong>${commentObj["commentator"]}</strong></div><div class="col">${commentObj["comment"]}</div></div>`;
+	else return `<div class="row"><p></p></div>`;
 }
 
 /* global moment firebase */
@@ -60,6 +61,9 @@ connectionsRef.on("value", function(snap) {
 
 
 var chatHistory = [];
+var chatRowLimit = 10;
+for (;chatHistory.length < chatRowLimit; chatHistory.push({})) {};
+
 var newUserComment = {
 	commentator:	"",
 	comment:		""
@@ -69,27 +73,19 @@ var newUserComment = {
 // At the page load and subsequent value changes, get a snapshot of the local data.
 // This function allows you to update your page in real-time when the values within the firebase node chatData changes
 database.ref("/chatData").on("value", function(snapshot) {
-
-  // If Firebase has a highPrice and highBidder stored (first case)
-  if (snapshot.child("newComment").exists()) {
-
-    // Set the local variables for highBidder equal to the stored values in firebase.
-
-	//chatHistory = snapshot.val().chatHistory;
-	if (chatHistory[chatHistory.length-1] !== snapshot.val().newComment) {
-		newUserComment = snapshot.val().newComment;
-		chatHistory.push(newUserComment);
+	if (snapshot.child("newComment").exists()) {
+		if (chatHistory[chatHistory.length-1] !== snapshot.val().newComment) {
+			if (chatHistory.length > chatRowLimit) chatHistory = chatHistory.slice(1); //we only want a max of 16 comments after the push
+			newUserComment = snapshot.val().newComment;
+			chatHistory.push(newUserComment);
+		}
 	}
-
-    // change the HTML to reflect the newly updated local values (most recent information from firebase)
-  }
- // else {	}
   
-  $("#chat-history").html(chatHistory.map(showHistory));
+	$("#chat-history").html(chatHistory.map(showHistory));
 
   // If any errors are experienced, log them to console.
 }, function(errorObject) {
-  console.log("The read failed: " + errorObject.code);
+	console.log("The read failed: " + errorObject.code);
 });
 
 // --------------------------------------------------------------
@@ -102,23 +98,16 @@ $("#submit-comment").on("click", function(event) {
 	var newUserComment = $("#new-comment").val().trim();
     
 	if (newUserComment && commenterName) {
-		//chatHistory.push({commentator:commenterName,comment:newUserComment},);
-		// Save the new price in Firebase
 		database.ref("/chatData").set({
 			newComment: {commentator:commenterName,comment:newUserComment},
 		});
 	}
-	
-	//$("#chat-history").html(chatHistory.map(showHistory));
 	$("#new-comment").val("");
-
 });
 
 // Whenever a user clicks the clear chat button
 $("#clear-comments").on("click", function(event) {
 	event.preventDefault();
-	
 	chatHistory = [];
 	$("#chat-history").html("");
-
 });
