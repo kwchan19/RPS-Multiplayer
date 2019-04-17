@@ -71,19 +71,21 @@ var newUserComment = {
 database.ref("/chatData").on("value", function(snapshot) {
 
   // If Firebase has a highPrice and highBidder stored (first case)
-  if (snapshot.child("chatHistory").exists()) {
+  if (snapshot.child("newComment").exists()) {
 
     // Set the local variables for highBidder equal to the stored values in firebase.
 
-	chatHistory = snapshot.val().chatHistory;
+	//chatHistory = snapshot.val().chatHistory;
+	if (chatHistory[chatHistory.length-1] !== snapshot.val().newComment) {
+		newUserComment = snapshot.val().newComment;
+		chatHistory.push(newUserComment);
+	}
 
     // change the HTML to reflect the newly updated local values (most recent information from firebase)
-	$("#chat-history").html(chatHistory.map(showHistory));
   }
-  else {
-    // Change the HTML to reflect the local value in firebase
-	$("#chat-history").html(chatHistory.map(showHistory));
-  }
+ // else {	}
+  
+  $("#chat-history").html(chatHistory.map(showHistory));
 
   // If any errors are experienced, log them to console.
 }, function(errorObject) {
@@ -91,23 +93,32 @@ database.ref("/chatData").on("value", function(snapshot) {
 });
 
 // --------------------------------------------------------------
-// Whenever a user clicks the click button
+// Whenever a user clicks the submit button
 $("#submit-comment").on("click", function(event) {
-  event.preventDefault();
+	event.preventDefault();
 
-  // Get the input values
-  var commenterName = $("#commenter-name").val().trim();
-  var newUserComment = $("#new-comment").val().trim();
+	// Get the input values
+	var commenterName = $("#commenter-name").val().trim();
+	var newUserComment = $("#new-comment").val().trim();
     
-  if (newUserComment && commenterName) chatHistory.push({commentator:commenterName,comment:newUserComment},);
-
-    // Save the new price in Firebase
-    database.ref("/chatData").set({
-	  newComment: {commentator:commenterName,comment:newUserComment},
-	  chatHistory: chatHistory
-    });
+	if (newUserComment && commenterName) {
+		//chatHistory.push({commentator:commenterName,comment:newUserComment},);
+		// Save the new price in Firebase
+		database.ref("/chatData").set({
+			newComment: {commentator:commenterName,comment:newUserComment},
+		});
+	}
 	
-	$("#chat-history").html(chatHistory.map(showHistory));
+	//$("#chat-history").html(chatHistory.map(showHistory));
 	$("#new-comment").val("");
+
+});
+
+// Whenever a user clicks the clear chat button
+$("#clear-comments").on("click", function(event) {
+	event.preventDefault();
+	
+	chatHistory = [];
+	$("#chat-history").html("");
 
 });
