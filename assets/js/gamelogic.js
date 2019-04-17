@@ -55,11 +55,27 @@ connectionsRef.on("value", function(snap) {
 
 // Creates an array that lists out all of the options (Rock, Paper, or Scissors).
 var computerChoices = ["r", "p", "s"];
-
-// Creating variables to hold the number of wins, losses, and ties. They start at 0.
-var wins = 0;
-var losses = 0;
-var ties = 0;
+var playerChoice = null;
+var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+var wins;
+var losses;
+var ties;
+database.ref("/gameData").on("value", function(snapshot) {
+	if (snapshot.child("wins").exists()) wins = snapshot.val().wins;
+	else wins = 0;
+	
+	if (snapshot.child("losses").exists()) losses = snapshot.val().losses;
+	else losses = 0;
+	
+	if (snapshot.child("ties").exists()) ties = snapshot.val().ties;
+	else ties = 0;
+	
+	displayScores();
+	
+  // If any errors are experienced, log them to console.
+}, function(errorObject) {
+	console.log("The read failed: " + errorObject.code);
+});
 
 //////////////////////////////////////////////////
 
@@ -83,19 +99,8 @@ var winsText = document.getElementById("wins-text");
 var lossesText = document.getElementById("losses-text");
 var tiesText = document.getElementById("ties-text");
 
-function determineWinner(playerChoice) {
-	
-	var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-	
-	
-	
-	// This logic determines the outcome of the game (win/loss/tie), and increments the appropriate number
-	if ((playerChoice === "r") || (playerChoice === "p") || (playerChoice === "s")) {
-		if ((playerChoice === "r" && computerGuess === "s") || (playerChoice === "s" && computerGuess === "p") || (playerChoice === "p" && computerGuess === "r")) wins++;
-		else if (playerChoice === computerGuess) ties++;
-		else losses++;
-
-		// Hide the directions
+function displayScores() {
+			// Hide the directions
 		directionsText.textContent = "";
 
 		// Display the user and computer guesses, and wins/losses/ties.
@@ -104,6 +109,17 @@ function determineWinner(playerChoice) {
 		winsText.textContent = "wins: " + wins;
 		lossesText.textContent = "losses: " + losses;
 		tiesText.textContent = "ties: " + ties;
+}
+
+function determineWinner(playerChoice) {
+	
+	// This logic determines the outcome of the game (win/loss/tie), and increments the appropriate number
+	if ((playerChoice === "r") || (playerChoice === "p") || (playerChoice === "s")) {
+		if ((playerChoice === "r" && computerGuess === "s") || (playerChoice === "s" && computerGuess === "p") || (playerChoice === "p" && computerGuess === "r")) wins++;
+		else if (playerChoice === computerGuess) ties++;
+		else losses++;
+
+displayScores();
 		
 		database.ref("/gameData").set({
 			wins:wins,
