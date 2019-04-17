@@ -99,7 +99,7 @@ $("#submit-comment").on("click", function(event) {
   var commenterName = $("#commenter-name").val().trim();
   var newUserComment = $("#new-comment").val().trim();
     
-  chatHistory.push({commentator:commenterName,comment:newUserComment},);
+  if (newUserComment && commenterName) chatHistory.push({commentator:commenterName,comment:newUserComment},);
 
     // Save the new price in Firebase
     database.ref("/chatData").set({
@@ -108,5 +108,6 @@ $("#submit-comment").on("click", function(event) {
     });
 	
 	$("#chat-history").html(chatHistory.map(showHistory));
+	$("#new-comment").val("");
 
 });
