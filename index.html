@@ -11,7 +11,6 @@
 		<script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
 		<!-- script src="https://www.gstatic.com/firebasejs/5.9.4/firebase.js"></script -->
 		<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
-		
 
 		<title>Multiplayer RPS</title>
 	</head>
@@ -19,15 +18,44 @@
 		<div class="jumbotron">
 			<h1>Rock, Paper, Scissors -- Online</h1>
 		</div>
-		<div>
-			<p id="directions-text">Press r, p or s to start playing!</p>
-			<p id="userchoice-text"></p>
-			<p id="computerchoice-text"></p>
-			<p id="wins-text"></p>
-			<p id="losses-text"></p>
-			<p id="ties-text"></p>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<p id="directions-text">Press r, p or s to start playing!</p>
+					<p id="userchoice-text"></p>
+					<p id="computerchoice-text"></p>
+					<p id="wins-text"></p>
+					<p id="losses-text"></p>
+					<p id="ties-text"></p>
+				</div>
+				<div class="col">
+					<div class="row">
+						<div class="card card-default">
+							<div class="card-body" id="chat-history">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="card-header">Enter your comment below</div>
+							<div class="card-body">
+								<form>
+									<div class="form-group row">
+										<label for="commenter-name">Your Name</label>
+										<input class="form-control" id="commenter-name" type="text">
+									</div>
+									<div class="form-group row">
+										<label for="commenter-name">Your comment</label>
+										<input class="form-control" id="new-comment" type="text">
+									</div>
+									<button class="btn btn-primary" id="submit-comment" type="submit">Submit</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		
 		<script> // Initialize Firebase
 			var config = {
 				apiKey: "AIzaSyDaPEPOAtaQmZCa3uTg_IyDceAVAIlPRgM",
@@ -37,9 +65,8 @@
 				storageBucket: "",
 				messagingSenderId: "315730385280"
 			};
-			
 			firebase.initializeApp(config);
 		</script>
-	<script type="text/javascript" src="./assets/js/gamelogic.js"></script>
+		<script type="text/javascript" src="./assets/js/gamelogic.js"></script>
 	</body>
 </html>
