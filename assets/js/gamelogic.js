@@ -82,7 +82,6 @@ database.ref("/gameData").on("value", function(snapshot) {
 
 var chatHistory = [];
 var chatRowLimit = 10;
-for (;chatHistory.length < chatRowLimit; chatHistory.push({})) {};
 
 var newUserComment = {
 	commentator:	"",
@@ -137,6 +136,7 @@ function showHistory(commentObj) {
 	else return `<div class="row"><div class="col" style="min-height:1.5em"></div></div>`;
 }
 
+
 // --------------------------------------------------------------
 // At the page load and subsequent value changes, get a snapshot of the local data.
 // This function allows you to update your page in real-time when the values within the firebase node chatData changes
@@ -148,6 +148,7 @@ database.ref("/chatData").on("value", function(snapshot) {
 			chatHistory.push(newUserComment);
 		}
 	}
+  for (;chatHistory.length < chatRowLimit; chatHistory.push({})) {};
   
 	$("#chat-history").html(chatHistory.map(showHistory));
 
@@ -177,7 +178,11 @@ $("#submit-comment").on("click", function(event) {
 $("#clear-comments").on("click", function(event) {
 	event.preventDefault();
 	chatHistory = [];
-	$("#chat-history").html("");
+	database.ref("/chatData").set({});
+	for (;chatHistory.length < chatRowLimit; chatHistory.push({})) {};
+	
+	// $("#chat-history").html("");
+	$("#chat-history").html(chatHistory.map(showHistory));
 });
 
 $(".choice-btn").on("click", function(event) {
