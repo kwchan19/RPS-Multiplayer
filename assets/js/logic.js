@@ -1,3 +1,5 @@
+// I want to add functionality to suspend the "RPS" listener when the chat input fields are in focus
+
 function showHistory(commentObj) {
 	return `<div class="row"><div class="col" style="text-align:right;"><strong>${commentObj["commentator"]}</strong></div><div class="col">${commentObj["comment"]}</div></div>`;
 }
