@@ -38,5 +38,11 @@ document.onkeyup = function(event) {
 		winsText.textContent = "wins: " + wins;
 		lossesText.textContent = "losses: " + losses;
 		tiesText.textContent = "ties: " + ties;
+		
+		database.ref("/gameData").set({
+			wins:wins,
+			losses:losses,
+			ties:ties
+		});
 	}
 };
