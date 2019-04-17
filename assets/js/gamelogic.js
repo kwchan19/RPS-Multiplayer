@@ -83,26 +83,23 @@ var winsText = document.getElementById("wins-text");
 var lossesText = document.getElementById("losses-text");
 var tiesText = document.getElementById("ties-text");
 
-// This function is run whenever the user presses a key.
-document.onkeyup = function(event) {
-
-	// Determines which key was pressed.
-	var userGuess = event.key;
-
-	// Randomly chooses a choice from the options array. This is the Computer's guess.
+function determineWinner(playerChoice) {
+	
 	var computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
-
-// This logic determines the outcome of the game (win/loss/tie), and increments the appropriate number
-	if ((userGuess === "r") || (userGuess === "p") || (userGuess === "s")) {
-		if ((userGuess === "r" && computerGuess === "s") || (userGuess === "s" && computerGuess === "p") || (userGuess === "p" && computerGuess === "r")) wins++;
-		else if (userGuess === computerGuess) ties++;
+	
+	
+	
+	// This logic determines the outcome of the game (win/loss/tie), and increments the appropriate number
+	if ((playerChoice === "r") || (playerChoice === "p") || (playerChoice === "s")) {
+		if ((playerChoice === "r" && computerGuess === "s") || (playerChoice === "s" && computerGuess === "p") || (playerChoice === "p" && computerGuess === "r")) wins++;
+		else if (playerChoice === computerGuess) ties++;
 		else losses++;
 
 		// Hide the directions
 		directionsText.textContent = "";
 
 		// Display the user and computer guesses, and wins/losses/ties.
-		userChoiceText.textContent = "You chose: " + userGuess;
+		userChoiceText.textContent = "You chose: " + playerChoice;
 		computerChoiceText.textContent = "The computer chose: " + computerGuess;
 		winsText.textContent = "wins: " + wins;
 		lossesText.textContent = "losses: " + losses;
@@ -114,7 +111,8 @@ document.onkeyup = function(event) {
 			ties:ties
 		});
 	}
-};
+	
+}
 
 // I want to add functionality to suspend the "RPS" listener when the chat input fields are in focus
 
@@ -169,5 +167,11 @@ $("#clear-comments").on("click", function(event) {
 $(".choice-btn").on("click", function(event) {
 	event.preventDefault();
 	var clickedValue = event.target;
-	console.log(clickedValue.attributes);
+	var paramLetter = "";
+		
+	if (clickedValue.attributes[0].value === "Rock") paramLetter = 'r';
+	else if (clickedValue.attributes[0].value === "Paper") paramLetter = 'p';
+	else if (clickedValue.attributes[0].value === "Scissors") paramLetter = 's';
+	
+	determineWinner(paramLetter);
 });
