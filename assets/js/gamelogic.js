@@ -189,10 +189,17 @@ $(".choice-btn").on("click", function(event) {
 	event.preventDefault();
 	var clickedValue = event.target;
 	var paramLetter = "";
+	computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)]; //Refreshes the computer choice
 		
-	if (clickedValue.attributes[0].value === "Rock") paramLetter = 'r';
-	else if (clickedValue.attributes[0].value === "Paper") paramLetter = 'p';
-	else if (clickedValue.attributes[0].value === "Scissors") paramLetter = 's';
+	if (clickedValue.attributes[0].value === "Rock") paramLetter = 'r', playerChoice = 'r';
+	else if (clickedValue.attributes[0].value === "Paper") paramLetter = 'p', playerChoice = 'p';
+	else if (clickedValue.attributes[0].value === "Scissors") paramLetter = 's', playerChoice = 's';
+	else if(clickedValue.attributes[0].value === "Refresh"){ //Sample button for refreshing
+		wins = 0;
+		losses = 0;
+		ties = 0;
+		displayScores();
+	}
 	
 	determineWinner(paramLetter);
 });
